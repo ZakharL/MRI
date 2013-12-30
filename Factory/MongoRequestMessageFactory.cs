@@ -16,11 +16,12 @@ namespace MRI.Factory
             { MongoOpCode.OP_UPDATE, typeof(MongoUpdateMessage) },
             { MongoOpCode.OP_INSERT, typeof(MongoInsertMessage) },
             { MongoOpCode.OP_DELETE, typeof(MongoDeleteMessage) },
-
         };
 
-        public static MongoStandardMessage GetRequest(BinaryReader reader, byte[] rawRequest)
+        public static MongoStandardMessage GetRequest(byte[] rawRequest)
         {
+            var reader = new BinaryReader( new MemoryStream(rawRequest) ); 
+
             var messageLength = reader.ReadInt32();
             var requestId = reader.ReadInt32();
             var responseTo = reader.ReadInt32();

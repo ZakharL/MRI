@@ -26,7 +26,7 @@ namespace MRI.Core.Proxy
             ms.Write( _reader.ReadBytes( length - MessageLengthFieldSize ), 0, length - MessageLengthFieldSize );
             ms.Position = 0;
 
-            return MongoRequestMessageFactory.GetRequest( new BinaryReader( ms ), ms.ToArray() );
+            return MongoRequestMessageFactory.GetRequest( ms.ToArray() );
         }
     }
 }

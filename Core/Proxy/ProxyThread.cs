@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using MRI.Core.Message;
 using MRI.Core.Utils;
@@ -44,6 +47,11 @@ namespace MRI.Core.Proxy
             finally
             {
                 _querySynchronizer.StopAction();                
+            }
+
+            if ( request.WaitForResponse() )
+            {
+                SendResponseToClient( ReadServerResponse() );
             }
         }
 
@@ -196,29 +204,25 @@ namespace MRI.Core.Proxy
         {
             try
             {
-                while (_client.Connected)
+                while ( _client.Connected )
                 {
                     var request = ReadClientRequest();
 
-                    if (request.GetType() == typeof (MongoInsertMessage))
+                    if ( request.GetType() == typeof( MongoInsertMessage ) )
                     {
-                        HandleInsertRequest((MongoInsertMessage) request);
+                        HandleInsertRequest( ( MongoInsertMessage )request );
                     }
-                    else if (request.GetType() == typeof (MongoDeleteMessage))
+                    else if ( request.GetType() == typeof( MongoDeleteMessage ) )
                     {
-                        HandleDeleteRequest((MongoDeleteMessage) request);
+                        HandleDeleteRequest( ( MongoDeleteMessage )request );
                     }
-                    else if (request.GetType() == typeof (MongoUpdateMessage))
+                    else if ( request.GetType() == typeof( MongoUpdateMessage ) )
                     {
-                        HandleUpdateRequest((MongoUpdateMessage) request);
+                        HandleUpdateRequest( ( MongoUpdateMessage )request );
                     }
                     else
                     {
-                        HandleRequest(request);
-                        if (request.WaitForResponse())
-                        {
-                            SendResponseToClient(ReadServerResponse());
-                        }
+                        HandleRequest( request );
                     }
                 }
             }
@@ -240,4 +244,5 @@ namespace MRI.Core.Proxy
             }
         }
     }
+
 }

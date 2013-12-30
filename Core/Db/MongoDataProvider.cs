@@ -61,7 +61,7 @@ namespace MRI.Core.Db
 
             foreach ( var doc in collection.FindAs<BsonDocument>(mongoQuery) )
             {
-                packer.Add( MongoDocumentReferenceExtractor.Parse(doc).ToList() );
+                packer.Add( MongoDocumentReferenceExtractor.Parse(doc) );
             }
 
             return packer.Get();

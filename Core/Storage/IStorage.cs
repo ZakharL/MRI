@@ -7,11 +7,11 @@ namespace MRI.Core.Storage
     {
         void Link( MongoReference reference, int count = 1);
 
-        void Link(ReferencePack change);
+        void Link( ReferencePack change );
 
         void Unlink( MongoReference reference, int count = 1);
 
-        void Unlink(ReferencePack change);
+        void Unlink( ReferencePack change );
 
         int Count( MongoReference reference );
     }

@@ -10,30 +10,22 @@ namespace MRI.Integrity.Parser
 
         public static bool operator == (MongoReference x, MongoReference y)
         {
-            if (!x.Reference.Equals(y.Reference))
+            if ( x == y )
+            {
+                return true;
+            }
+            if ( x == null || y == null )
             {
                 return false;
             }
-            if(!x.CollectionName.Equals(y.CollectionName))
-            {
-                return false;
-            }
-            if(!x.DatabaseName.Equals(y.DatabaseName))
-            {
-                return  false;
-            }
-
-            return true;
+            return x.Reference == y.Reference 
+                && x.CollectionName ==  y.CollectionName
+                && x.DatabaseName == y.DatabaseName;
         }
 
         public static bool operator != (MongoReference x, MongoReference y)
         {
-            if ( x.Reference.Equals( y.Reference ) && x.CollectionName.Equals( y.CollectionName ) && x.DatabaseName.Equals( y.DatabaseName ) )
-            {
-                return false;
-            }
-
-            return true;
+            return !( x == y );
         }
     }
 }

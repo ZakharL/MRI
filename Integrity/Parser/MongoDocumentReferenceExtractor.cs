@@ -13,14 +13,9 @@ namespace MRI.Integrity.Parser
 
         public static List<MongoReference> Parse( MongoInsertMessage message )
         {
-            var result = new List<MongoReference>();
-            foreach ( var document in message.Documents )
-            {
-                result = result.Concat( Parse( document ) ).ToList();
-            }
-            return result;
+            return message.Documents.SelectMany( Parse ).ToList();
         }
-
+        
         private static List<MongoReference> ParseReferences( IEnumerable<BsonValue> value )
         {
             var result = new List<MongoReference>();
@@ -50,7 +45,7 @@ namespace MRI.Integrity.Parser
             }
         }
 
-        public static IEnumerable<MongoReference> Parse( IEnumerable<BsonElement> document )
+        public static List<MongoReference> Parse( IEnumerable<BsonElement> document )
         {
             var result = new List<MongoReference>();
 
@@ -62,11 +57,11 @@ namespace MRI.Integrity.Parser
                         ? ParseReferences( item.Value.AsBsonArray )
                         : new List<MongoReference> { ParseReference( item.Value.AsBsonDocument ) };
 
-                    result = result.Concat( refs ).ToList();
+                    result.AddRange( refs );
                 }
                 else if ( item.Value.IsBsonArray || item.Value.IsBsonDocument )
                 {
-                    result = result.Concat( Parse( item.Value.AsBsonDocument ) ).ToList();
+                    result.AddRange( Parse( item.Value.AsBsonDocument ) );
                 }
             }
 

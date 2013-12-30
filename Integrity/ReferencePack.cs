@@ -14,12 +14,6 @@ namespace MRI.Integrity
             Count = 1;
         }
 
-        public static ReferencePack operator - (ReferencePack x, ReferencePack y)
-        {
-            x.Count = x.Count - y.Count;
-            return x;
-        }
-
         public object Clone()
         {
             return MemberwiseClone();
